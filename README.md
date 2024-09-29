@@ -12,6 +12,16 @@ You can install this package via source:
 pip install --verbose .
 ```
 
+You can also install it without the need to clone the repository:
+
+```bash
+pip install --verbose git+https://github.com/CG-SHOP/pyutils25
+```
+
+We are working on making the package available on PyPI, but we there is some
+unexplainable issue with the CI/CD pipeline. We will update this README as soon
+as the package is available on PyPI.
+
 During the installation, CGAL and other dependencies will be downloaded and
 compiled. This can take a while but should happen mostly automatic. You need to
 have a C++ compiler (and the Python development environment) installed. Most
