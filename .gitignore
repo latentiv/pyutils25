@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# skbuild_conan
+_skbuild/
+.conan/
+**/CMakeUserPresets.json
+
 # Distribution / packaging
 .Python
 build/
