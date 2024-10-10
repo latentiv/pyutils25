@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 from cgshop2025_pyutils.data_schemas.instance import Cgshop2025Instance
 from cgshop2025_pyutils.data_schemas.solution import Cgshop2025Solution
-from cgshop2025_pyutils.geometry import Point, VerificationGeometryHelper
+from cgshop2025_pyutils.geometry import Point, VerificationGeometryHelper, FieldNumber
 
 
 class VerificationResult(BaseModel):
@@ -21,7 +21,7 @@ def verify(
     # Combine instance and solution points into one loop to simplify the logic
     all_points = [Point(x, y) for x, y in zip(instance.points_x, instance.points_y)]
     all_points.extend(
-        Point(x, y)
+        Point(FieldNumber(x), FieldNumber(y))
         for x, y in zip(solution.steiner_points_x, solution.steiner_points_y)
     )
 
