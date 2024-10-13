@@ -282,6 +282,9 @@ Kernel::FT str_to_exact(std::string number) {
   number.erase(0, number.find_first_not_of('0'));
   if (number.empty())
     number += '0';
+  if (number[0] == '-') {
+    return -str_to_exact(number.substr(1));
+  } 
   if (std::count(number.begin(), number.end(), '/') == 1) { // rational numbers
     auto point_pos = number.find('/');
     auto numerator = str_to_exact(number.substr(0, point_pos));

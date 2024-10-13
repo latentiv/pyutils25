@@ -217,4 +217,5 @@ try to fix them as soon as possible.
 
 ## Changelog
 
+- `0.0.4`: Fixed bug with negative numbers in FieldNumber with string input
 - `0.0.3`: Allows negative Steiner points and snsure coordinates are converted to FieldNumber before Point construction

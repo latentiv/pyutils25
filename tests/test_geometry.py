@@ -31,6 +31,10 @@ def test_point_creation():
     assert str(p2) == "(1, 1)"
     assert p1 != p2
 
+def test_negative_strings():
+    for i in range(100):
+        _number = FieldNumber(f"-{10**i}")
+        assert _number == FieldNumber(-1)*FieldNumber(f"{10**i}")
 
 def test_point_operations():
     p = Point(1, 1)
