@@ -122,8 +122,8 @@ def test_verify_correct_solution_extra_points():
     )
     solution = Cgshop2025Solution(
         instance_uid=instance.instance_uid,
-        steiner_points_x=[272, 320],
-        steiner_points_y=[512, 512],
+        steiner_points_x=["272/1", 320],
+        steiner_points_y=[512, "1024/2"],
         edges=[
             [0, 5],
             [5, 6],

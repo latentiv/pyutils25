@@ -74,6 +74,9 @@ class Cgshop2025Instance(BaseModel):
 
     @model_validator(mode="after")
     def validate_constraints(self):
+        if self.num_constraints != len(self.additional_constraints):
+            msg = "The number of constraints does not match the number of additional constraints."
+            raise ValueError(msg)
         for constraint in self.additional_constraints:
             if len(constraint) != 2:
                 msg = "Constraints must have exactly two points."
