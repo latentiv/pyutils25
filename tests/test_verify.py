@@ -39,6 +39,15 @@ SEEDS = [
     3679785335,
 ]
 
+def test_negative_steiner_points():
+    solution = Cgshop2025Solution(
+        instance_uid="test_id",
+        steiner_points_x=[-1, "-1", "-1/2"],
+        steiner_points_y=[-1, "-1", "2/-1"],
+        edges=[[0, 1], [1, 2], [2, 3], [3, 4], [4, 0]],
+    )
+
+
 
 def generate_random_point_sets(seed, num_sets=10, num_points=500):
     rng = random.Random(seed)

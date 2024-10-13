@@ -59,8 +59,8 @@ class Cgshop2025Solution(BaseModel):
                     if len(components) != 2:
                         return False
                     a, b = components
-                    return a.isdigit() and b.isdigit()
-                return value.isdigit()
+                    return a.lstrip('-').isdigit() and b.lstrip('-').isdigit()
+                return value.lstrip('-').isdigit()
             return False
 
         for x in self.steiner_points_x:
