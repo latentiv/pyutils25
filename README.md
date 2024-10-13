@@ -214,3 +214,7 @@ license for more information.
 
 If you encounter any issues, please report them in the issue tracker. We will
 try to fix them as soon as possible.
+
+## Changelog
+
+- `0.0.3`: Allows negative Steiner points and snsure coordinates are converted to FieldNumber before Point construction
