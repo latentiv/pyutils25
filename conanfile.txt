@@ -1,7 +1,1 @@
-[requires]
-fmt/[>=10.0.0]
-cgal/[>=5.6]
-boost/[>=1.76.0,<1.80.0]
 
-[generators]
-cmake
