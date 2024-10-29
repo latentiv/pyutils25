@@ -31,6 +31,6 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
         "networkx>=2.0.0,<3.0.0",
         "pydantic>=1.9,<2.0.0"
     ], 
-    conan_requirements = ["fmt/[>=10.0.0]", "cgal/[>=5.6]", "boost/[>=1.76.0,<1.80.0]"],
+    conan_requirements = ["fmt/[>=10.0.0]", "cgal/[>=5.6]", "boost/[>=1.76.0"],
     cmake_minimum_required_version="3.23",
 )
