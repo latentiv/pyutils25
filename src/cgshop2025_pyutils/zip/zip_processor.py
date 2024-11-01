@@ -22,8 +22,9 @@ from .zip_reader_errors import (
 class BadSolutionFile(Exception):
     """Custom exception raised for invalid solution files in the zip."""
 
-    def __init__(self, msg: str):
+    def __init__(self, msg: str, file_name: str):
         super().__init__(msg)
+        self.file_name = file_name
 
     def __str__(self):
         return self.args[0]
@@ -74,7 +75,6 @@ class ZipSolutionIterator:
         had_filename = False
         for filename in zip_file.namelist():
             if self._is_solution_filename(filename):
-                print(f"Found solution file: {filename}")
                 had_filename = True
                 yield filename
         if not had_filename:
@@ -104,7 +104,7 @@ class ZipSolutionIterator:
                             yield solution
                         except ValidationError as e:
                             msg = f"Error in file '{file_name}': {e}"
-                            raise BadSolutionFile(msg) from e
+                            raise BadSolutionFile(msg,file_name=str(file_name)) from e
         except BadZipFile as e:
             msg = f"Invalid ZIP file: {e}"
             raise InvalidZipError(msg) from e
