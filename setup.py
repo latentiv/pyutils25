@@ -32,5 +32,6 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
         "pydantic>=2.0.0"
     ], 
     conan_requirements=["fmt/[>=10.0.0]", "cgal/[>=6.0]"],  # C++ Dependencies
+    conan_profile_settings={"compiler.cppstd": 17},
     cmake_minimum_required_version="3.23",
 )
