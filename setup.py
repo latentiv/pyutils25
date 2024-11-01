@@ -15,7 +15,7 @@ def readme():
 
 setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
     name="cgshop2025_pyutils",
-    version="0.0.5",
+    version="0.0.6",
     author="Dominik Krupke",
     license="LICENSE",
     description="Utilities for verifying solutions of the CG:SHOP 2025 Competition.",
@@ -31,6 +31,6 @@ setup(  # https://scikit-build.readthedocs.io/en/latest/usage.html#setup-options
         "networkx>=2.0.0",
         "pydantic>=2.0.0"
     ], 
-    conan_requirements=["fmt/[>=10.0.0]", "cgal/[>=5.6]"],  # C++ Dependencies
+    conan_requirements=["fmt/[>=10.0.0]", "cgal/[>=6.0]"],  # C++ Dependencies
     cmake_minimum_required_version="3.23",
 )

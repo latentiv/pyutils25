@@ -267,10 +267,9 @@ auto to_exact(std::int64_t x) {
 
 std::optional<Point> intersection_point(const Segment2 &s1,
                                         const Segment2 &s2) {
-  CGAL::cpp11::result_of<Kernel::Intersect_2(Segment2, Segment2)>::type result =
-      CGAL::intersection(s1, s2);
+  auto result = CGAL::intersection(s1, s2);
   if (result) {
-    if (const Point *p = boost::get<Point>(&*result)) {
+    if (const Point *p = std::get_if<Point>(&*result)) {
       return *p;
     }
   }
