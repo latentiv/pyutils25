@@ -46,7 +46,7 @@ class ZipSolutionIterator:
         path_or_file: Union[BinaryIO, str, PathLike],
         file_size_limit: int = 250 * 1_000_000,  # 250 MB file size limit
         zip_size_limit: int = 2_000 * 1_000_000,  # 2 GB zip size limit
-        solution_extensions=("json", "solution"),
+        solution_extensions=(".solution.json"),
     ):
         self.path = path_or_file
         self._checker = BadZipChecker(
@@ -64,9 +64,8 @@ class ZipSolutionIterator:
 
     def _is_solution_filename(self, name: str) -> bool:
         """Checks if the file is a valid solution file based on its extension and visibility."""
-        extension = name.split(".")[-1].lower()
         # Check extension and skip hidden files/directories
-        return extension in self._solution_extensions and not any(
+        return any(name.lower().endswith(extension) for extension in self._solution_extensions) and not any(
             self._is_hidden_folder_name(s) for s in name.split("/")
         )
 

@@ -54,7 +54,7 @@ def verify(
     # Check for isolated points
     isolated_points = geom_helper.search_for_isolated_points()
     if isolated_points:
-        errors.append(f"Isolated points found at {isolated_points}")
+        errors.append(f"Isolated points found at {[str(p) for p in isolated_points]}")
 
     # If any errors were detected, return a result with those errors
     if errors:
