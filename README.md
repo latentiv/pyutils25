@@ -217,6 +217,7 @@ try to fix them as soon as possible.
 
 ## Changelog
 
+- `0.0.7`: Fix for only accepting `.solution.json` (there was a `,` missing)
 - `0.0.6`: Fix for CGAL 6
 - `0.0.5`: Improved error messages for isolated points. Only accepting `.solution.json` as solution file extension.
 - `0.0.4`: Fixed bug with negative numbers in FieldNumber with string input
