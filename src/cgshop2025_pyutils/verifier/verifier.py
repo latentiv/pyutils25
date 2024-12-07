@@ -7,6 +7,7 @@ from cgshop2025_pyutils.data_schemas.solution import Cgshop2025Solution
 from cgshop2025_pyutils.geometry import (
     FieldNumber,
     Point,
+    Polygon,
     VerificationGeometryHelper,
     points_contain_duplicates,
 )
