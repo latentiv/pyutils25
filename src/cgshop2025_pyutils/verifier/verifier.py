@@ -12,8 +12,6 @@ from cgshop2025_pyutils.geometry import (
     VerificationGeometryHelper,
     points_contain_duplicates,
     intersection_point,
-    contains,
-    on_boundary
 )
 
 # ADDED: check for duplicate edges
