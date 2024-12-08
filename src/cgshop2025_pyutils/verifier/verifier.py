@@ -61,7 +61,7 @@ def verify(
     # ADDED: return all duplicate points
     all_points_copy = all_points.copy()
     for p1 in range(len(all_points)):
-      if all_points[p1] is in all_points_copy:
+      if all_points[p1] in all_points_copy:
         duplicates_list = [p2 for p2 in range(p1+1, len(all_points)) if all_points[p1].x() == all_points[p2].x() and all_points[p1].y() == all_poonts[p2].y()]
         if len(duplicates_list) > 1: errors.append(f"Duplicate point found ({all_points[p1]}): {duplicates_list}")
         all_points_copy = list(filter((all_points[p1]).__ne__, all_points_copy))
@@ -78,7 +78,7 @@ def verify(
     # ADDED: return all duplicate edges
     all_edges_copy = solution.edges.copy()
     for ed in solution.edges:
-      if ed is in all_edges_copy:
+      if ed in all_edges_copy:
         duplicates_list = [ed2 for ed2 in solution.edges if (ed[0] == ed2[0] and ed[1] == ed2[1]) or (ed[1] == ed2[0] and ed[0] == ed2[1])]
         if len(duplicates_list) > 1: errors.append(f"Duplicate edge found: {duplicates_list}")
         all_edges_copy = list(filter((ed).__ne__, all_edges_copy))
