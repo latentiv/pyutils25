@@ -99,13 +99,14 @@ def verify(
     for p in range(len(all_points)):
 
       found = False
+      found_edges = 0
 
       for edge in solution.edges:
 
         if p == edge[0] or p == edge[1]:
 
           found = True
-          break
+          found_edges += 1
 
       if found is False:
 
@@ -116,6 +117,16 @@ def verify(
                     f"Found point without any edge: point[{p}]"
                 ],
             )
+
+        if found_edges < 2:
+
+          return VerificationResult(
+                num_obtuse_triangles=-1,
+                num_steiner_points=-1,
+                errors=[
+                    f"Found point with only one edge: point[{p}]"
+                ],
+          )    
         
 
     # ADDED: Create the region boundary Polygon
