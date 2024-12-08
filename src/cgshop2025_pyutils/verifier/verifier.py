@@ -108,7 +108,7 @@ def verify(
       p_edges_count = sum([1 for edge in solution.edges if p == edge[0] or p == edge[1]])
 
       if p_edges_count < 2:
-        errors.append(f"Found point with {p_edges_count} edge{["s", ""][p_edges_count]}: point[{p}]")    
+        errors.append(f"Found point with {p_edges_count} edge{['s', ''][p_edges_count]}: point[{p}]")    
 
     
     # ADDED: Create the region boundary Polygon
