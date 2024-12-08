@@ -152,10 +152,9 @@ def verify(
                                 cur_segm.source().y() + FieldNumber(cur_t) * (cur_segm.target().y() - cur_segm.source().y())
                                 )
 
-            if region_boundary_poly.contains(inter_point) is False:
-                                
+            if region_boundary_poly.contains(inter_point) is False:                                
               errors.append(f"Found edge outside the region boundary: {solution.edges[i]}")
-
+              break
           
 
     # ADDED: Check if there are any edges that cross each other
