@@ -45,6 +45,9 @@ def verify(
 ) -> VerificationResult:
     geom_helper = VerificationGeometryHelper()
 
+    # Initialize an error list to collect all issues found during verification
+    errors = []
+    
     # Combine instance and solution points into one loop to simplify the logic
     all_points = [Point(x, y) for x, y in zip(instance.points_x, instance.points_y)]
     all_points.extend(
@@ -291,9 +294,6 @@ def verify(
     # Add segments to the geometry helper
     for edge in solution.edges:
         geom_helper.add_segment(edge[0], edge[1])
-
-    # Initialize an error list to collect all issues found during verification
-    errors = []
 
     # Check for non-triangular faces
     non_triang = geom_helper.search_for_non_triangular_faces()
