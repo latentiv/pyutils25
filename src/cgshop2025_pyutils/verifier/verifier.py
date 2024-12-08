@@ -95,7 +95,7 @@ def verify(
             )
 
 
-    # ADDED: Check that each point has at least one edge
+    # ADDED: Check that each point has at least two edges
     for p in range(len(all_points)):
 
       found = False
@@ -192,7 +192,7 @@ def verify(
 
           
 
-    # ADDED: Check if there any edges cross each other
+    # ADDED: Check if there are any edges that cross each other
     for e1 in range(len(solution.edges)):
       for e2 in range(e1 + 1, len(solution.edges)):
 
