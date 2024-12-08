@@ -62,7 +62,7 @@ def verify(
     all_points_copy = all_points.copy()
     for p1 in range(len(all_points)):
       if all_points[p1] in all_points_copy:
-        duplicates_list = [p2 for p2 in range(p1+1, len(all_points)) if all_points[p1].x() == all_points[p2].x() and all_points[p1].y() == all_poonts[p2].y()]
+        duplicates_list = [p2 for p2 in range(p1+1, len(all_points)) if all_points[p1].x() == all_points[p2].x() and all_points[p1].y() == all_points[p2].y()]
         if len(duplicates_list) > 1: errors.append(f"Duplicate point found ({all_points[p1]}): {duplicates_list}")
         all_points_copy = list(filter((all_points[p1]).__ne__, all_points_copy))
 
