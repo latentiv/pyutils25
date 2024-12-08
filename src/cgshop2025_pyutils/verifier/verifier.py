@@ -134,6 +134,8 @@ def verify(
       # Check if the current edge intersects any part of the region boundary
       for rb_segm in region_boundary_segm:
 
+        is_outside = False
+          
         # Intersection point
         inter_p = intersection_point(edges_segm[i], rb_segm)
 
@@ -155,8 +157,10 @@ def verify(
 
             if region_boundary_poly.contains(inter_point) is False:                                
               errors.append(f"Found edge outside the region boundary: {solution.edges[i]}")
+              is_outside = True
               break
-          
+                
+        if is_outside: break
 
     # ADDED: Check if there are any edges that cross each other
     for e1 in range(len(solution.edges)):
