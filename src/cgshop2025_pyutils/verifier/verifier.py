@@ -53,30 +53,42 @@ def verify(
     )
 
     # check for duplicate points; if found, we cannot properly interpret the indices.
-    duplicates = points_contain_duplicates(all_points)
-    if duplicates:
-        p1, p2 = duplicates
-        return VerificationResult(
-            num_obtuse_triangles=-1,
-            num_steiner_points=-1,
-            errors=[
-                f"Duplicate points found: Indices {p1} and {p2} are the same point ({all_points[p1]})"
-            ],
-        )
+    #duplicates = points_contain_duplicates(all_points)
+    #if duplicates:
+    #    p1, p2 = duplicates
+    #    errors.append(f"Duplicate points found: Indices {p1} and {p2} are the same point ({all_points[p1]})")
+
+    # ADDED: return all duplicate points
+    all_points_copy = all_points.copy()
+    for p1 in range(len(all_points)):
+      if all_points[p1] is in all_points_copy:
+        duplicates_list = [p2 for p2 in range(p1+1, len(all_points)) if all_points[p1].x() == all_points[p2].x() and all_points[p1].y() == all_poonts[p2].y()]
+        if len(duplicates_list) > 1: errors.append(f"Duplicate point found ({all_points[p1]}): {duplicates_list}")
+        list(filter((all_points[p1]).__ne__, all_points_copy))
 
 
     # ADDED: Check for duplicate edges (undirected)
-    duplicates = edges_contain_duplicates(solution.edges)
-    if duplicates:
-        e1, e2 = duplicates
-        return VerificationResult(
-            num_obtuse_triangles=-1,
-            num_steiner_points=-1,
-            errors=[
-                f"Duplicate edges found: Indices {e1} and {e2} are the same edge ({solution.edges[e1]})"
-            ],
-        )        
 
+    # Check the the list for occurences of the same edge (both directions)
+    #duplicates = edges_contain_duplicates(solution.edges)
+    #if duplicates:
+    #    e1, e2 = duplicates
+    #    errors.append(f"Duplicate edges found: Indices {e1} and {e2} are the same edge ({solution.edges[e1]})")        
+
+    # ADDED: return all duplicate edges
+    all_edges_copy = solution.edges.copy()
+    for ed in solution.edges:
+      if ed is in all_edges_copy:
+        duplicates_list = [ed2 for ed2 in solution.edges if (ed[0] == ed2[0] and ed[1] == ed2[1]) or (ed[1] == ed2[0] and ed[0] == ed2[1])]
+        if len(duplicates_list) > 1: errors.append(f"Duplicate edge found: {duplicates_list}")
+        list(filter((ed).__ne__, all_edges_copy))
+        list(filter(([ed[1], ed[0]]).__ne__, all_edges_copy))
+          
+
+    # ADDED: Check for edges from a vertex to itself
+    for edge in solution.edges:
+        if edge[0] == edge[1]:
+          errors.append(f"Found edge from vertex to itself: {edge}")  
 
     # check for out-of-bounds point indices in edges
     for index, edge in enumerate(solution.edges):
@@ -86,49 +98,19 @@ def verify(
             or edge[1] < 0
             or edge[1] >= len(all_points)
         ):
-            return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Edge {index} ({edge}) contains out-of-bounds point indices (total number of points: {len(all_points)})"
-                ],
-            )
+          errors.append(f"Edge {index} ({edge}) contains out-of-bounds point indices (total number of points: {len(all_points)})")
 
 
     # ADDED: Check that each point has at least two edges
     for p in range(len(all_points)):
 
-      found = False
-      found_edges = 0
+      # Count the edges having p as one of their endpoints
+      p_edges_count = sum([1 for edge in solution.edges if p == edge[0] or p == edge[1]])
 
-      for edge in solution.edges:
+      if p_edges_count < 2:
+        errors.append(f"Found point with {p_edges_count} edge{["s", ""][p_edges_count]}: point[{p}]")    
 
-        if p == edge[0] or p == edge[1]:
-
-          found = True
-          found_edges += 1
-
-      if found is False:
-
-        return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Found point without any edge: point[{p}]"
-                ],
-            )
-
-        if found_edges < 2:
-
-          return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Found point with only one edge: point[{p}]"
-                ],
-          )    
-        
-
+    
     # ADDED: Create the region boundary Polygon
     region_boundary_poly = Polygon([all_points[i] for i in instance.region_boundary])
 
@@ -136,13 +118,7 @@ def verify(
     for point in all_points[instance.num_points:]:
 
       if region_boundary_poly.contains(point) is False:
-        return VerificationResult(
-            num_obtuse_triangles=-1,
-            num_steiner_points=-1,
-            errors=[
-                f"Found Steiner point outside the region boundary: point[{point}]"
-            ],
-        )
+        errors.append(f"Found Steiner point outside the region boundary: point[{point}]")
 
 
     # ADDED: Check if there is any edge outside the region boundary
@@ -159,14 +135,7 @@ def verify(
         inter_p = intersection_point(edges_segm[i], rb_segm)
 
         if inter_p is not None and inter_p not in all_points:
-
-          return VerificationResult(
-            num_obtuse_triangles=-1,
-            num_steiner_points=-1,
-            errors=[
-                f"Found edge outside the region boundary: {solution.edges[i]}"
-            ],
-          )
+          errors.append(f"Found edge outside the region boundary: {solution.edges[i]}")
 
         # Sample the edge to check if it lies outside the region boundary
         num_samples = 10
@@ -182,13 +151,7 @@ def verify(
 
             if region_boundary_poly.contains(inter_point) is False:
                                 
-              return VerificationResult(
-                        num_obtuse_triangles=-1,
-                        num_steiner_points=-1,
-                        errors=[
-                            f"Found edge outside the region boundary: {solution.edges[i]}"
-                        ],
-              )
+              errors.append(f"Found edge outside the region boundary: {solution.edges[i]}")
 
           
 
@@ -202,13 +165,7 @@ def verify(
         #if inter_point is not None and inter_point != edges_segm[e1].source() and inter_point != edges_segm[e1].target() and inter_point not in all_points:
         if inter_point is not None and inter_point not in all_points:
 
-          return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Found edges crossing each other: {solution.edges[e1]}, {solution.edges[e2]}"
-                ],
-          )
+          errors.append(f"Found edges crossing each other: {solution.edges[e1]}, {solution.edges[e2]}")
 
 
 
@@ -225,9 +182,7 @@ def verify(
       for cur_edge in solution.edges:
 
         if bound_part_poly.on_boundary(all_points[cur_edge[0]]) and bound_part_poly.on_boundary(all_points[cur_edge[1]]):
-
           rb_edges_collection[bound_part].append(cur_edge)
-
 
       # Check that it is entirely present
       part_edges = rb_edges_collection[bound_part].copy()
@@ -241,14 +196,7 @@ def verify(
 
       # Check if the entire part in present and the list has more length > 1
       if len(part_edges) > 1 and ([part_end,part_start] in part_edges or [part_start,part_end] in part_edges):
-        return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Part of the boundary region has overlapping edges: point[{part_start}] to point[{part_end}]"
-                ],
-        )
-
+        errors.append(f"Part of the boundary region has overlapping edges: point[{part_start}] to point[{part_end}]")
 
       while found is True and len(part_edges) > 0:
       
@@ -271,25 +219,11 @@ def verify(
 
       # There is an error; either the current boundary part is not covered entirely or there both split and not split edges or overlaps
       if cur_p != part_end: 
-        return VerificationResult(
-                  num_obtuse_triangles=-1,
-                  num_steiner_points=-1,
-                  errors=[
-                      f"Part of the boundary region is missing: point[{part_start}] to point[{part_end}]"
-                  ],
-        )
+        errors.append(f"Part of the boundary region is missing: point[{part_start}] to point[{part_end}]")
         
       if len(part_edges) > 0:
-        return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Part of the boundary region has overlapping edges: point[{part_start}] to point[{part_end}]"
-                ],
-        )
+        errors.append(f"Part of the boundary region has overlapping edges: point[{part_start}] to point[{part_end}]")
         
-        
-
 
     # ADDED: Check that all the additional contraints' edges (split or not) are present in the trinagulation
     add_constraints_edges = [(constr[0], constr[1]) for constr in instance.additional_constraints]
@@ -321,14 +255,7 @@ def verify(
 
       # Check if the entire part is present and the list has more length > 1
       if len(part_edges) > 1 and ([part_end,part_start] in part_edges or [part_start,part_end] in part_edges):
-        return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Part of an additional constraint has overlapping edges: [{part_start}, {part_end}]"
-                ],
-        )
-
+        errors.append(f"Part of an additional constraint has overlapping edges: [{part_start}, {part_end}]")
 
       while found is True and len(part_edges) > 0:
       
@@ -351,22 +278,10 @@ def verify(
 
       # There is an error; either the current boundary part is not covered entirely or there both split and not split edges or overlaps
       if cur_p != part_end: 
-        return VerificationResult(
-                  num_obtuse_triangles=-1,
-                  num_steiner_points=-1,
-                  errors=[
-                      f"Part of an additional constraint is missing: [{part_start}, {part_end}]"
-                  ],
-        )
+        errors.append(f"Part of an additional constraint is missing: [{part_start}, {part_end}]")
         
       if len(part_edges) > 0:
-        return VerificationResult(
-                num_obtuse_triangles=-1,
-                num_steiner_points=-1,
-                errors=[
-                    f"Part of an additional constraint has overlapping edges: [{part_start}, {part_end}]"
-                ],
-        )
+        errors.append(f"Part of an additional constraint has overlapping edges: [{part_start}, {part_end}]")
 
 
     # Add points to the geometry helper
@@ -394,7 +309,6 @@ def verify(
     holes = geom_helper.search_for_faces_with_holes()
     if holes:
         errors.append(f"Faces with holes found at {holes}")
-
 
     # Check for isolated points
     isolated_points = geom_helper.search_for_isolated_points()
