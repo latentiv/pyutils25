@@ -121,7 +121,7 @@ def verify(
     for point in all_points[instance.num_points:]:
 
       if region_boundary_poly.contains(point) is False:
-        errors.append(f"Found Steiner point outside the region boundary: point[{point}]")
+        errors.append(f"Found Steiner point outside the region boundary: {point}")
 
 
     # ADDED: Check if there is any edge outside the region boundary
