@@ -139,6 +139,7 @@ def verify(
 
         if inter_p is not None and inter_p not in all_points:
           errors.append(f"Found edge outside the region boundary: {solution.edges[i]}")
+          break
 
         # Sample the edge to check if it lies outside the region boundary
         num_samples = 10
